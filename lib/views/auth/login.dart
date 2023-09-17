@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:fluttercourse/widgets/custom_logo.dart';
 import 'package:fluttercourse/widgets/custom_button.dart';
 import 'package:fluttercourse/widgets/custom_text_field.dart';
@@ -15,6 +16,26 @@ class _LoginState extends State<Login> {
   TextEditingController email =TextEditingController();
    TextEditingController password =TextEditingController();
    GlobalKey<FormState> formstate =GlobalKey<FormState>();
+   
+Future signInWithGoogle() async {
+  // Trigger the authentication flow
+  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+if (googleUser ==null){
+  return ;
+}
+  // Obtain the auth details from the request
+  final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+  // Create a new credential
+  final credential = GoogleAuthProvider.credential(
+    accessToken: googleAuth?.accessToken,
+    idToken: googleAuth?.idToken,
+  );
+
+  // Once signed in, return the UserCredential
+  await FirebaseAuth.instance.signInWithCredential(credential);
+   Navigator.of(context).pushNamedAndRemoveUntil("homepage", (route) => false);
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,6 +112,7 @@ class _LoginState extends State<Login> {
   Navigator.of(context).pushReplacementNamed("homepage");
 }else {
   FirebaseAuth.instance.currentUser!.sendEmailVerification();  // ignore: use_build_context_synchronously
+   // ignore: use_build_context_synchronously
    AwesomeDialog(
         context: context,
         dialogType: DialogType.error,
@@ -129,7 +151,10 @@ class _LoginState extends State<Login> {
            },),
         const SizedBox(
           height:20,),
-           MaterialButton(onPressed: (){},
+           MaterialButton(onPressed: ()
+           {
+            signInWithGoogle();
+           },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(70),
         

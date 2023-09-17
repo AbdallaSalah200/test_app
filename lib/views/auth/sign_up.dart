@@ -102,13 +102,15 @@ class _SignUpState extends State<SignUp> {
     email: email.text,
     password: password.text,
   );
-  
-  Navigator.of(context).pushReplacementNamed("homepage");
+  FirebaseAuth.instance.currentUser!.sendEmailVerification();
+
+  Navigator.of(context).pushReplacementNamed("login");
 
         } on FirebaseAuthException catch (e) {
   if (e.code == 'weak-password') {
+    // ignore: avoid_print
     print('The password provided is too weak.');
-     // ignore: use_build_context_synchronously
+    
      AwesomeDialog(
         context: context,
         dialogType: DialogType.error,

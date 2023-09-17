@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,6 +12,8 @@ class HomePage extends StatelessWidget {
         title: const  Text('Flutter FireBase'),
         actions:   [
           IconButton(onPressed: ()async{
+            GoogleSignIn googleSignIn =GoogleSignIn();
+            googleSignIn.disconnect();
             await FirebaseAuth.instance.signOut();
             // ignore: use_build_context_synchronously
             Navigator.of(context).pushNamedAndRemoveUntil("login", (route) => false);
