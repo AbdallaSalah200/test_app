@@ -82,15 +82,15 @@ class _SignUpState extends State<SignUp> {
           }
          },
          ) ,
-        const  Padding(
-           padding:  EdgeInsets.only(top: 10,bottom: 20),
-           child: Text("Forget Password ?",style: TextStyle(
-            fontSize: 18,
+        // const  Padding(
+        //    padding:  EdgeInsets.only(top: 10,bottom: 20),
+        //    child: Text("Forget Password ?",style: TextStyle(
+        //     fontSize: 18,
             
-           ),
-           textAlign: TextAlign.right,
-           ),
-         ),
+        //    ),
+        //    textAlign: TextAlign.right,
+        //    ),
+        //  ),
           const SizedBox(
           height: 20,
            ),

@@ -88,13 +88,47 @@ if (googleUser ==null){
           }
          },
          ) ,
-        const  Padding(
-           padding:  EdgeInsets.only(top: 10,bottom: 20),
-           child: Text("Forget Password ?",style: TextStyle(
-            fontSize: 18,
-            
-           ),
-           textAlign: TextAlign.right,
+        Padding(
+           padding: const  EdgeInsets.only(top: 10,bottom: 20),
+           child: InkWell(
+            onTap: (){
+              if (email.text== ""){
+         AwesomeDialog(
+          
+        context: context,
+        dialogType: DialogType.success,
+        animType: AnimType.rightSlide,
+        title: 'Dialog Title',
+        desc: 'الرجاء ملئ الحقل ',
+        ).show();
+                return;
+              }
+           try {
+  FirebaseAuth.instance.sendPasswordResetEmail(email: email.text);
+}  catch (e) {
+  AwesomeDialog(
+          
+        context: context,
+        dialogType: DialogType.error,
+        animType: AnimType.rightSlide,
+        title: 'Dialog Title',
+        desc: 'الرجاء ادخال بريد الكتروني صحيح',
+        ).show();
+}
+           AwesomeDialog(
+        context: context,
+        dialogType: DialogType.error,
+        animType: AnimType.rightSlide,
+        title: 'Dialog Title',
+        desc: 'الرجاء التوجه علي بريدك الالكتروني لقد عملنا اعادة ارسال لكلمة مرور',
+        ).show();
+            },
+             child: const  Text("Forget Password ?",style: TextStyle(
+              fontSize: 18,
+              
+             ),
+             textAlign: TextAlign.right,
+             ),
            ),
          ),
           const SizedBox(
