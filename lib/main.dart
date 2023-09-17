@@ -38,7 +38,7 @@ FirebaseAuth.instance
     return MaterialApp(
      // themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
-      home: FirebaseAuth.instance.currentUser ==null? const  Login():const  HomePage(),
+      home: (FirebaseAuth.instance.currentUser !=null&&FirebaseAuth.instance.currentUser!.emailVerified )? const  HomePage():const  Login(),
       routes: {
         "login":(context) => const Login(),
         "signup":(context) => const SignUp(),

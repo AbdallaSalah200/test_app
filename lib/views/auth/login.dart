@@ -86,10 +86,23 @@ class _LoginState extends State<Login> {
       email: email.text,
       password: password.text
     );
-    Navigator.of(context).pushReplacementNamed('login');
+    if (credential.user!.emailVerified) {
+  // ignore: use_build_context_synchronously
+  Navigator.of(context).pushReplacementNamed("homepage");
+}else {
+  FirebaseAuth.instance.currentUser!.sendEmailVerification();  // ignore: use_build_context_synchronously
+   AwesomeDialog(
+        context: context,
+        dialogType: DialogType.error,
+        animType: AnimType.rightSlide,
+        title: 'Dialog Title',
+        desc: 'الرجاء التوجه علي بريدك الالكتروني وتحقق منه',
+        ).show();
+}
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
     //  print('No user found for that email.');
+      // ignore: use_build_context_synchronously
       AwesomeDialog(
           context: context,
           dialogType: DialogType.error,
@@ -100,6 +113,7 @@ class _LoginState extends State<Login> {
           ).show();
     } else if (e.code == 'wrong-password') {
       //print('Wrong password provided for that user.');
+      // ignore: use_build_context_synchronously
       AwesomeDialog(
           context: context,
           dialogType: DialogType.error,

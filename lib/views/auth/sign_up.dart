@@ -102,10 +102,13 @@ class _SignUpState extends State<SignUp> {
     email: email.text,
     password: password.text,
   );
+  
   Navigator.of(context).pushReplacementNamed("homepage");
+
         } on FirebaseAuthException catch (e) {
   if (e.code == 'weak-password') {
     print('The password provided is too weak.');
+     // ignore: use_build_context_synchronously
      AwesomeDialog(
         context: context,
         dialogType: DialogType.error,
@@ -117,6 +120,7 @@ class _SignUpState extends State<SignUp> {
         ).show();
   } else if (e.code == 'email-already-in-use') {
     print('The account already exists for that email.');
+     // ignore: use_build_context_synchronously
      AwesomeDialog(
         context: context,
         dialogType: DialogType.error,
