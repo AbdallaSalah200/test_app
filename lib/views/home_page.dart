@@ -8,6 +8,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.orange,
+        onPressed: (){
+        
+        Navigator.of(context).pushNamed('add');
+      },
+      child:const  Icon(Icons.add),
+      ),
       appBar: AppBar(
         title: const  Text('Flutter FireBase'),
         actions:   [
@@ -20,16 +28,45 @@ class HomePage extends StatelessWidget {
           }, icon: const  Icon(Icons.exit_to_app))
         ],
       ),
-      body: ListView(
-        children:   [
-          FirebaseAuth.instance.currentUser!.emailVerified ? const  Center(child: Text("Welcome")):
-          MaterialButton(
-            textColor: Colors.white,
-            color: Colors.blue,
-            onPressed: (){
-              FirebaseAuth.instance.currentUser!.sendEmailVerification() ;
-            },
-            child: const Text("please verifed your email") ,)
+      body: GridView(
+        gridDelegate: const  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisExtent: 200),
+        children:  [
+          Card(  
+            child:Padding(
+              padding: const EdgeInsets.all(15),
+              child: Container(
+                padding:const  EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                  Image.asset("images/logo.png",height: 100,),
+                 const  Text("Company")
+                  ],
+                ),
+              ),
+            )
+             ,),
+              Card(  
+            child:Padding(
+              padding: const EdgeInsets.all(15),
+              child: Container(
+                padding:const  EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                  Image.asset("images/logo.png",height: 100,),
+                 const  Text("Company")
+                  ],
+                ),
+              ),
+            )
+             ,)
+          // FirebaseAuth.instance.currentUser!.emailVerified ? const  Center(child: Text("Welcome")):
+          // MaterialButton(
+          //   textColor: Colors.white,
+          //   color: Colors.blue,
+          //   onPressed: (){
+          //     FirebaseAuth.instance.currentUser!.sendEmailVerification() ;
+          //   },
+          //   child: const Text("please verifed your email") ,)
         ],
       ),
     );

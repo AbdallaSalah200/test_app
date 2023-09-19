@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fluttercourse/categories/add.dart';
 import 'package:fluttercourse/views/home_page.dart';
 import 'package:fluttercourse/views/auth/login.dart';
 import 'package:fluttercourse/views/auth/sign_up.dart';
@@ -37,12 +38,27 @@ FirebaseAuth.instance
   Widget build(BuildContext context) {
     return MaterialApp(
      // themeMode: ThemeMode.light,
+     theme: ThemeData(
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.grey[50],
+      titleTextStyle:const  TextStyle(
+        color: Colors.orange,
+        fontSize: 17,
+        fontWeight: FontWeight.bold
+      ),
+      iconTheme:  const  IconThemeData(
+        color: Colors.orange
+      )
+    )
+     ),
       debugShowCheckedModeBanner: false,
-      home: (FirebaseAuth.instance.currentUser !=null&&FirebaseAuth.instance.currentUser!.emailVerified )? const  HomePage():const  Login(),
+      home:const HomePage(),
+      // (FirebaseAuth.instance.currentUser !=null&&FirebaseAuth.instance.currentUser!.emailVerified )? const  HomePage():const  Login(),
       routes: {
         "login":(context) => const Login(),
         "signup":(context) => const SignUp(),
          "homepage":(context) => const HomePage(),
+         "add":(context) => const Add()
       },
     );
   }

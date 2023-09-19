@@ -6,17 +6,21 @@ final void Function() onpressed ;
 final String title ;
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(onPressed: onpressed,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(70),
-      
-      ),
-      color: Colors.orange,
-      textColor: Colors.white,
-      height: 50,
-      child:   Center(
-       child: Text(title,),
-     ),
-      );
+    return SizedBox(
+      width: double.negativeInfinity,
+      child: MaterialButton(onPressed: onpressed,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(70),
+        
+        ),
+        color: Colors.orange,
+        textColor: Colors.white,
+        height: 50,
+        minWidth: double.minPositive,
+        child:   Center(
+         child: Text(title,),
+       ),
+        ),
+    );
   }
 }
