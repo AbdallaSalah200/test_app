@@ -7,7 +7,8 @@ final String title ;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.negativeInfinity,
+     // width: double.negativeInfinity,
+     width: 100,
       child: MaterialButton(onPressed: onpressed,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(70),

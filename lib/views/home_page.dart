@@ -1,10 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttercourse/constant/constant.dart';
 
-class HomePage extends StatelessWidget {
+
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<QueryDocumentSnapshot> data =[];
+  bool  isLoading = true ;
+  getdata()async{
+  QuerySnapshot querySnapshot =  await FirebaseFirestore.instance
+  .collection('categories').get();
+  data.addAll(querySnapshot.docs);
+  isLoading =false;
+  setState(() {
+    
+  });
+  } 
+  @override
+  void initState() {
+   getdata();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,37 +54,65 @@ class HomePage extends StatelessWidget {
           }, icon: const  Icon(Icons.exit_to_app))
         ],
       ),
-      body: GridView(
+      body: isLoading ?const  Center(child: CircularProgressIndicator()):  GridView.builder(
+          itemCount: data.length,
         gridDelegate: const  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisExtent: 200),
-        children:  [
-          Card(  
-            child:Padding(
-              padding: const EdgeInsets.all(15),
-              child: Container(
+   itemBuilder: (context, i) {
+     return  InkWell(
+      onLongPress: (){
+          AwesomeDialog(
+          
+        context: context,
+        dialogType: DialogType.warning,
+        animType: AnimType.rightSlide,
+        title: 'Dialog Title',
+        desc: 'هل أنت متأكد من عملية الحذف',
+        btnCancelOnPress: () {},
+        btnOkOnPress: ()async{
+       await FirebaseFirestore.instance
+  .collection('categories').doc(data[i].id).delete();
+  Navigator.of(context).pushReplacementNamed("homepage");
+        }
+        ).show();
+      },
+       child: Card(  
+              child:Container(
                 padding:const  EdgeInsets.all(10),
                 child: Column(
                   children: [
-                  Image.asset("images/logo.png",height: 100,),
-                 const  Text("Company")
+                  Image.asset(kImage,height: 100,),
+                Text("${data[i]["name"]}")
                   ],
                 ),
-              ),
-            )
-             ,),
-              Card(  
-            child:Padding(
-              padding: const EdgeInsets.all(15),
-              child: Container(
-                padding:const  EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                  Image.asset("images/logo.png",height: 100,),
-                 const  Text("Company")
-                  ],
-                ),
-              ),
-            )
-             ,)
+              )
+               ,),
+     );
+   },
+          // Card(  
+          //   child:Container(
+          //     padding:const  EdgeInsets.all(10),
+          //     child: Column(
+          //       children: [
+          //       Image.asset(kImage,height: 100,),
+          //      const  Text("Company")
+          //       ],
+          //     ),
+          //   )
+          //    ,),
+            //   Card(  
+            // child:Padding(
+            //   padding: const EdgeInsets.all(15),
+            //   child: Container(
+            //     padding:const  EdgeInsets.all(10),
+            //     child: Column(
+            //       children: [
+            //       Image.asset(kImage,height: 100,),
+            //      const  Text("home")
+            //       ],
+            //     ),
+            //   ),
+            // )
+            //  ,)
           // FirebaseAuth.instance.currentUser!.emailVerified ? const  Center(child: Text("Welcome")):
           // MaterialButton(
           //   textColor: Colors.white,
@@ -67,7 +121,7 @@ class HomePage extends StatelessWidget {
           //     FirebaseAuth.instance.currentUser!.sendEmailVerification() ;
           //   },
           //   child: const Text("please verifed your email") ,)
-        ],
+       
       ),
     );
   }
