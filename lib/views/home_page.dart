@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:fluttercourse/categories/edit.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttercourse/constant/constant.dart';
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   bool  isLoading = true ;
   getdata()async{
   QuerySnapshot querySnapshot =  await FirebaseFirestore.instance
-  .collection('categories').get();
+  .collection('categories').where("id",isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
   data.addAll(querySnapshot.docs);
   isLoading =false;
   setState(() {
@@ -66,12 +67,17 @@ class _HomePageState extends State<HomePage> {
         dialogType: DialogType.warning,
         animType: AnimType.rightSlide,
         title: 'Dialog Title',
-        desc: 'هل أنت متأكد من عملية الحذف',
-        btnCancelOnPress: () {},
-        btnOkOnPress: ()async{
-       await FirebaseFirestore.instance
+        desc: "أختر ماذا تريد",
+        btnCancelText: "'حذف'",
+        btnOkText: "تعديل ",
+        btnCancelOnPress: () 
+       async {
+            await FirebaseFirestore.instance
   .collection('categories').doc(data[i].id).delete();
   Navigator.of(context).pushReplacementNamed("homepage");
+        },
+        btnOkOnPress: (){
+  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Edit(docid: data[i].id, oldname: data[i]["name"])));
         }
         ).show();
       },

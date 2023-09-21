@@ -145,7 +145,7 @@ if (googleUser ==null){
       email: email.text,
       password: password.text
     );
-     isLoading =true ;
+     isLoading =false ;
     setState(() {
       
     });
@@ -164,6 +164,10 @@ if (googleUser ==null){
         ).show();
 }
   } on FirebaseAuthException catch (e) {
+     isLoading =false ;
+    setState(() {
+      
+    });
     if (e.code == 'user-not-found') {
     //  print('No user found for that email.');
       // ignore: use_build_context_synchronously

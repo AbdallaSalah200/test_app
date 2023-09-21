@@ -4,29 +4,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttercourse/widgets/custom_button.dart';
 import 'package:fluttercourse/widgets/custom_text_field_add.dart';
 
-class Add extends StatefulWidget {
-  const Add({super.key});
+class Edit extends StatefulWidget {
+  final String docid;
+  final String oldname;
+  const Edit({super.key, required this.docid, required this.oldname});
 
   @override
-  State<Add> createState() => _AddState();
+  State<Edit> createState() => _EditState();
 }
 
-class _AddState extends State<Add> {
+class _EditState extends State<Edit> {
  GlobalKey<FormState> formstate =GlobalKey<FormState>();
  TextEditingController name =TextEditingController();
   CollectionReference categories = FirebaseFirestore.instance.collection('categories');
   bool isLoading = false ;
-  addCategoris ()async{
+  editategoris ()async{
 if (formstate.currentState!.validate()) {
   try {
     isLoading =true ;
     setState(() {
       
     });
-  DocumentReference response =    await  categories.add({
-        "name":name.text,
-        "id": FirebaseAuth.instance.currentUser!.uid//لمعرفة id خاصة بمستخدم
-      });
+   await  categories.doc(widget.docid).update({
+    "name": name.text
+   } );
       Navigator.of(context).pushNamedAndRemoveUntil("homepage",(route)=> false);
 } catch (e) {
   isLoading=false;
@@ -36,6 +37,11 @@ if (formstate.currentState!.validate()) {
   print("Error$e");
 }
 }
+  }
+  @override
+  void initState() {
+    super.initState();
+    name.text =widget.oldname;
   }
     //  Future<void> addUser() {
     //   // Call the user's CollectionReference to add a new user
@@ -65,7 +71,7 @@ if (formstate.currentState!.validate()) {
             }),
           ),
           CustomButton(onpressed: (){
-            addCategoris();
+             editategoris();
          //   addUser();
           }, title: "Add",
           
