@@ -25,9 +25,13 @@ if (formstate.currentState!.validate()) {
     setState(() {
       
     });
-   await  categories.doc(widget.docid).update({
-    "name": name.text
-   } );
+   await  categories.doc(widget.docid).set({
+    "name": name.text,
+   //"id":FirebaseAuth.instance.currentUser!.uid
+  
+   } ,
+    SetOptions(merge: true)
+   );
       Navigator.of(context).pushNamedAndRemoveUntil("homepage",(route)=> false);
 } catch (e) {
   isLoading=false;
@@ -37,6 +41,11 @@ if (formstate.currentState!.validate()) {
   print("Error$e");
 }
 }
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    name.text;
   }
   @override
   void initState() {

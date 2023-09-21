@@ -37,6 +37,7 @@ if (formstate.currentState!.validate()) {
 }
 }
   }
+   
     //  Future<void> addUser() {
     //   // Call the user's CollectionReference to add a new user
     //   return categories
@@ -46,6 +47,11 @@ if (formstate.currentState!.validate()) {
     //       .then((value) => print("User Added"))
     //       .catchError((error) => print("Failed to add user: $error"));
     // }
+      @override
+     void dispose() {
+    super.dispose();
+    name.text;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
